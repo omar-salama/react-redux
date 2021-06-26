@@ -16,9 +16,9 @@ app.get("/users", (req, res) => {
       res.status(500).json(err.message);
     });
 });
-app.get("/users/:id", (req, res) => {
-  const _id = req.params.id;
-  User.findById({ _id })
+app.get("/users/:name", (req, res) => {
+  const name = req.params.name;
+  User.find({ name: name })
     .then((result) => {
       res.status(200).json(result);
     })

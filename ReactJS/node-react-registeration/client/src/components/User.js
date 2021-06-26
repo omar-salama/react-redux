@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 const User = ({ user }) => {
   return (
     <div className="card mt-3">
