@@ -1,13 +1,16 @@
+import { Link } from "react-router-dom";
 const User = ({ user }) => {
   return (
     <div className="card mt-3">
-      <div className="card-body">
-        <h4 className="card-title">{user.name}</h4>
-        <p className="card-text">{user.email}</p>
-        {/* <Link className="w-25" to={`/users/${user.id}`}>
-                    <img className="w-100 rounded-circle"
-                        src={`/images/${user.image}`} alt={user.name} />
-                </Link> */}
+      <div className="card-body d-flex justify-content-between">
+        <h4 className="card-title align-self-center">{user.name}</h4>
+        <Link to={`/user/${user._id}`} className=" w-25">
+            <img
+              className="rounded-circle w-100 img-thumbnail"
+              src="https://via.placeholder.com/250"
+              alt="user name"
+            />
+        </Link>
       </div>
     </div>
   );

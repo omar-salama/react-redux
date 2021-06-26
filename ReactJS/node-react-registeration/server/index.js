@@ -16,9 +16,19 @@ app.get("/users", (req, res) => {
       res.status(500).json(err.message);
     });
 });
-app.get("/users/:name", (req, res) => {
+app.get("/users/name/:name", (req, res) => {
   const name = req.params.name;
   User.find({ name: name })
+    .then((result) => {
+      res.status(200).json(result);
+    })
+    .catch((err) => {
+      res.status(400).json(err.message);
+    });
+});
+app.get("/users/:id", (req, res) => {
+  const _id = req.params.id;
+  User.findById({ _id })
     .then((result) => {
       res.status(200).json(result);
     })
