@@ -8,7 +8,7 @@ const App = () => {
   return (
     <Provider store={store}>
       <Navbar />
-      <div className="container mt-5">
+      <div className="container mt-4">
         <AppRouter />
       </div>
     </Provider>
