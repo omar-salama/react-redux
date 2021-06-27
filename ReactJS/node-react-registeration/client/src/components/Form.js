@@ -29,6 +29,7 @@ const Form = () => {
           bottom: "auto",
         },
       }}
+      ariaHideApp={false}
     >
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

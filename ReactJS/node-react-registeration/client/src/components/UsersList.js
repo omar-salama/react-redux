@@ -9,9 +9,12 @@ const UsersList = () => {
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);
-  if (!users) {
-    return <Spinner />;
-  }
+
+  if (!users) return <Spinner />;
+
+  if (users.length === 0)
+    return <h3 className="text-center">No Users Found</h3>;
+    
   return (
     <div className="mt-4">
       {users.map((user) => {
