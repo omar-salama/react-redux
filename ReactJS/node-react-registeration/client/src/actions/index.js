@@ -28,9 +28,8 @@ export const getUserById = async (_id) => {
   };
 };
 export const addNewUser = async (user) => {
-  let response = null;
   try {
-    response = await axios.post(api, user);
+    let response = await axios.post(api, user);
     if (response.status === 201) {
       response = await axios.get(api);
       return {
@@ -42,6 +41,19 @@ export const addNewUser = async (user) => {
     console.log(err);
   }
 };
+export const deleteUser = async (_id) => {
+  let response = null;
+  try {
+    response = await axios.delete(`${api}/${_id}`);
+  } catch (error) {
+    console.log(error);
+  }
+  return {
+    type: "USER_DELETED",
+    payload: response.data,
+  };
+};
+
 export const showModal = () => {
   return { type: "showModal", payload: true };
 };

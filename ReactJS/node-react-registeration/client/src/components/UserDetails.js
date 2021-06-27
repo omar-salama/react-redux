@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getUserById } from "../actions";
+import { deleteUser, getUserById } from "../actions";
 import Spinner from "./Spinner";
-const UserDetails = ({ match }) => {
-  const _id = match.params.id;
+const UserDetails = (props) => {
+  const _id = props.match.params.id;
   const dispatch = useDispatch();
   const user = useSelector((state) => {
     return state.users.details;
@@ -11,6 +11,14 @@ const UserDetails = ({ match }) => {
   useEffect(() => {
     dispatch(getUserById(_id));
   }, [dispatch, _id]);
+
+  const onDelete = () => {
+    const ans = window.confirm("Are you sure?")
+    if (ans) {
+      dispatch(deleteUser(_id))
+      props.history.replace("/")
+    }
+  }
 
   if (!user) return <Spinner />;
   return (
@@ -21,13 +29,15 @@ const UserDetails = ({ match }) => {
           <p className="card-text lead">{user.email}</p>
 
           <button className="btn btn-primary me-1">Edit</button>
-          <button className="btn btn-danger ms-1">Delete</button>
+          <button className="btn btn-danger ms-1" onClick={onDelete}>
+            Delete
+          </button>
         </div>
-          <img
-            className="rounded-1"
-            src="https://via.placeholder.com/250"
-            alt="user name"
-          />
+        <img
+          className="rounded-1"
+          src="https://via.placeholder.com/250"
+          alt="user name"
+        />
       </div>
     </div>
   );
