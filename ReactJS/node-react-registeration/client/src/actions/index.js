@@ -28,3 +28,10 @@ export const getUserById = async (_id) => {
     payload: response.data,
   };
 };
+
+export const showModal = () => {
+  return { type: "showModal", payload: true };
+};
+export const hideModal = () => {
+  return { type: "hideModal", payload: false };
+};
