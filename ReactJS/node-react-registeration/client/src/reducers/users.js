@@ -4,6 +4,8 @@ export const users = (state = {}, actions) => {
       return { ...state, list: actions.payload };
     case "USER_DETAILS":
       return { ...state, details: actions.payload };
+    case "NEW_USER":
+      return { ...state, list: actions.payload };
     default:
       return state;
   }

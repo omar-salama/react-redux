@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { showModal } from "../actions";
 
 const Navbar = () => {
@@ -21,14 +21,14 @@ const Navbar = () => {
             </li>
           </ul>
           <ul className="navbar-nav ms-auto">
-            <Link
+            <button
               className="btn btn-primary"
               onClick={() => {
                 dispatch(showModal());
               }}
             >
               Register
-            </Link>
+            </button>
           </ul>
         </div>
       </nav>
