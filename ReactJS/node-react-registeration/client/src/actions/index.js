@@ -36,7 +36,7 @@ export const addNewUser = async (user) => {
         type: "NEW_USER",
         payload: response.data,
       };
-    }
+    } else return { type: "USER_CREATED", payload: [] };
   } catch (err) {
     console.log(err);
   }
@@ -49,10 +49,25 @@ export const deleteUser = async (_id) => {
     console.log(error);
   }
   return {
-    type: "USER_DELETED",
+    type: "DELETE_USER",
     payload: response.data,
   };
 };
+export const updateUser = async (id, user) => {
+  try {
+    let response = await axios.put(`${api}/${id}`, user);
+    return { type: "UPDATE_USER", payload: response.data };
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+export function clearDetails() {
+  return {
+    type: "CLEAR_DETAILS",
+    payload: null,
+  };
+}
 
 export const showModal = () => {
   return { type: "showModal", payload: true };

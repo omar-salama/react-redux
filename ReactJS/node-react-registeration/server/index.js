@@ -49,11 +49,11 @@ app.post("/users", (req, res) => {
     });
 });
 
-app.patch("/users/:id", (req, res) => {
+app.put("/users/:id", (req, res) => {
   const _id = req.params.id;
   const { body } = req;
-  User.findByIdAndUpdate(_id, body)
-    .then(() => res.status(200).json())
+  User.findOneAndUpdate({_id}, body, { new: true })
+    .then((result) => res.status(200).json(result))
     .catch((err) => res.status(400).json(err.message));
 });
 

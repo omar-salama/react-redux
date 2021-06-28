@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 const User = ({ user }) => {
   return (
-    <div className="card mt-3">
+    <div className="card mb-3">
       <div className="card-body d-flex justify-content-between">
         <h4 className="card-title align-self-center">{user.name}</h4>
         <Link to={`/user/${user._id}`} className=" w-25">
