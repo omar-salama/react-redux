@@ -5,17 +5,23 @@ import { useState } from "react";
 const Form = () => {
   const { modal } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
-  const [user, setUser] = useState({ name: "", email: "" });
+  const [user, setUser] = useState({ name: "", email: "", avatar: "" });
 
   const handleChange = (e) => {
     const key = e.currentTarget.name;
     let state = { ...user };
-    state[key] = e.target.value;
+    if (key !== "avatar") state[key] = e.target.value;
+    else state[key] = e.target.files[0];
     setUser(state);
   };
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     dispatch(hideModal());
-    dispatch(addNewUser(user));
+    const formData = new FormData();
+    formData.append("avatar", user.avatar);
+    formData.append("name", user.name);
+    formData.append("email", user.email);
+    dispatch(addNewUser(formData));
   };
   return (
     <ReactModal
@@ -31,7 +37,7 @@ const Form = () => {
       }}
       ariaHideApp={false}
     >
-      <form onSubmit={handleSubmit}>
+      <form method="post" onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
             Name
@@ -53,6 +59,18 @@ const Form = () => {
             className="form-control"
             id="email"
             name="email"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="formFile" className="form-label">
+            Choose an avatar
+          </label>
+          <input
+            className="form-control"
+            name="avatar"
+            type="file"
+            id="formFile"
             onChange={handleChange}
           />
         </div>

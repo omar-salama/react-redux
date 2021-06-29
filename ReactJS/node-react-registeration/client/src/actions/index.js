@@ -56,7 +56,13 @@ export const deleteUser = async (_id) => {
 export const updateUser = async (id, user) => {
   try {
     let response = await axios.put(`${api}/${id}`, user);
-    return { type: "UPDATE_USER", payload: response.data };
+    console.log(response);
+    if (response.status === 200) {
+      response = await axios.get(`${api}/${id}`);
+      return { type: "UPDATE_USER", payload: response.data };
+
+      
+    } else return { type: "UPDATE_USER", payload: [] };
   } catch (err) {
     console.error(err);
   }

@@ -6,17 +6,26 @@ const Form = ({ info }) => {
   const _id = info._id;
   const dispatch = useDispatch();
   const [modal, setModal] = useState({ isOpen: false });
-  const [user, setUser] = useState({ name: info.name, email: info.email });
+  const [user, setUser] = useState({
+    name: info.name,
+    email: info.email,
+    avatar: info.avatar,
+  });
 
   const handleChange = (e) => {
     const key = e.currentTarget.name;
     let state = { ...user };
-    state[key] = e.target.value;
+    if (key !== "avatar") state[key] = e.target.value;
+    else state[key] = e.target.files[0];
     setUser(state);
   };
   const handleSubmit = () => {
     setModal({ isOpen: false });
-    dispatch(updateUser(_id, user));
+    const formData = new FormData();
+    formData.append("avatar", user.avatar);
+    formData.append("name", user.name);
+    formData.append("email", user.email);
+    dispatch(updateUser(_id, formData));
   };
   return (
     <>
@@ -65,6 +74,18 @@ const Form = ({ info }) => {
               id="email"
               name="email"
               value={user.email}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="formFile" className="form-label">
+              Choose an avatar
+            </label>
+            <input
+              className="form-control"
+              name="avatar"
+              type="file"
+              id="formFile"
               onChange={handleChange}
             />
           </div>

@@ -35,9 +35,9 @@ const UserDetails = (props) => {
           </button>
         </div>
         <img
-          className="rounded-1"
-          src="https://via.placeholder.com/250"
-          alt="user name"
+          className="rounded-1 w-50 mx-auto"
+          src={`../uploads/${user.avatar}`}
+          alt={user.name}
         />
       </div>
     </div>

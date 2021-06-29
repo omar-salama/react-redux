@@ -4,10 +4,10 @@ const User = ({ user }) => {
     <div className="card mb-3">
       <div className="card-body d-flex justify-content-between">
         <h4 className="card-title align-self-center">{user.name}</h4>
-        <Link to={`/user/${user._id}`} className=" w-25">
+        <Link to={`/user/${user._id}`} className="w-25 h-25">
             <img
-              className="rounded-circle w-100 img-thumbnail"
-              src="https://via.placeholder.com/250"
+              className="rounded-circle img-thumbnail"
+              src={`uploads/${user.avatar}`}
               alt="user name"
             />
         </Link>

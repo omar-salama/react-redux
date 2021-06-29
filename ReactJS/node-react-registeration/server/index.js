@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const fs = require("fs/promises");
 const PORT = process.env.PORT || 3001;
 const app = express();
 require("./db_connection");
@@ -31,9 +32,8 @@ const upload = multer({
   fileFilter,
 }); // EOF handling image upload
 
-
 app.use(express.json());
-app.use('/uploads', express.static('uploads'))
+app.use("/uploads", express.static("uploads"));
 
 app.get("/users", (req, res) => {
   User.find({})
@@ -57,20 +57,17 @@ app.get("/users/name/:name", (req, res) => {
 app.get("/users/:id", (req, res) => {
   const _id = req.params.id;
   User.findById({ _id })
-    .then((result) => {
-      res.status(200).json(result);
-    })
+    .then((result) => res.status(200).json(result))
     .catch((err) => {
       res.status(400).json(err.message);
     });
 });
 app.post("/users", upload.single("avatar"), (req, res) => {
-  console.log(req.file);
   let user = new User({
     _id: new mongoose.Types.ObjectId(),
     name: req.body.name,
     email: req.body.email,
-    avatar: req.file.path,
+    avatar: req.file.filename,
   });
   user
     .save()
@@ -82,21 +79,33 @@ app.post("/users", upload.single("avatar"), (req, res) => {
     });
 });
 
-app.put("/users/:id", (req, res) => {
+app.put("/users/:id", upload.single("avatar"), (req, res) => {
   const _id = req.params.id;
-  const { body } = req;
-  User.findOneAndUpdate({ _id }, body, { new: true })
-    .then((result) => res.status(200).json(result))
+  const user = {
+    name: req.body.name,
+    email: req.body.email,
+    avatar: req.file ? req.file.filename : req.body.avatar,
+  };
+  User.findOneAndUpdate({ _id }, user)
+    .then((data) => {
+      if (user.avatar !== data.avatar) deleteAvatar(data.avatar);
+      return res.status(200).json(data);
+    })
     .catch((err) => res.status(400).json(err.message));
 });
 
 app.delete("/users/:id", (req, res) => {
   const _id = req.params.id;
   User.findByIdAndDelete(_id)
-    .then(() => res.status(200).json())
+    .then((data) => {
+      if (data.avatar) deleteAvatar(data.avatar);
+      return res.status(200).json();
+    })
     .catch((err) => res.status(400).json(err.message));
 });
-
+deleteAvatar = (avatar) => {
+  fs.unlink(`uploads/${avatar}`).catch((err) => console.error(err));
+};
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });
