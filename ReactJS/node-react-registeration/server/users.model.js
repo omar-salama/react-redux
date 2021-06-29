@@ -10,6 +10,7 @@ const User = mongoose.model("Users", {
   },
   avatar: {
     type: String,
+    required: true,
   },
 });
 module.exports = User;
