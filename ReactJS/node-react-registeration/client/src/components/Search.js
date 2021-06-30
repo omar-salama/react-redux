@@ -15,6 +15,11 @@ const Search = () => {
               className="form-control"
               placeholder="Find user by name"
               ref={userRef}
+              onKeyPress={(e) => {
+                return e.key === "Enter"
+                  ? dispatch(getUsers(userRef.current.value))
+                  : false;
+              }}
             />
             <button
               className="btn btn-primary ps-4 pe-4"
