@@ -1,0 +1,45 @@
+.container {
+  margin-top: 2.5rem !important;
+}
+
+/* main page */
+
+.Search {
+  margin-bottom: 2rem !important;
+}
+.User a {
+  text-decoration: none;
+  color: inherit;
+}
+.User img {
+  border-radius: 50%;
+  height: 13vw;
+  width: 13vw;
+}
+.User .card:hover {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+@media screen and (max-width: 767px) {
+  .User img {
+    height: 20vw;
+    width: 20vw;
+  }
+}
+@media screen and (max-width: 575px) {
+  .User img {
+    height: 25vw;
+    width: 25vw;
+  }
+}
+
+/* UserDetails */
+
+.UserDetails img {
+    width: 35%;
+}
+@media screen and (max-width: 767px) {
+    .UserDetails img {
+        margin: auto;
+        width: 100%;
+    }
+  }

@@ -23,22 +23,24 @@ const UserDetails = (props) => {
   };
 
   if (!user) return <Spinner />;
-  return (
-    <div className="card mt-3">
-      <div className="card-body d-flex flex-column-reverse flex-md-row justify-content-evenly">
-        <div className="align-self-center text-center text-md-start flex-md-fill m-2 m-md-5">
-          <h1 className="card-title">{user.name}</h1>
-          <p className="card-text lead">{user.email}</p>
-          <EditForm info={user} />
-          <button className="btn btn-danger ms-1" onClick={onDelete}>
-            Delete
-          </button>
+  return user && (
+    <div className="UserDetails">
+      <div className="card mt-3">
+        <div className="card-body d-flex flex-column-reverse flex-md-row justify-content-evenly">
+          <div className="align-self-center text-center text-md-start flex-md-fill m-2 m-md-5">
+            <p className="card-title display-3">{user.name}</p>
+            <p className="card-text display-6 mb-4">{user.email}</p>
+            <EditForm info={user} />
+            <button className="btn btn-danger ms-2" onClick={onDelete}>
+              Delete
+            </button>
+          </div>
+          <img
+            className="rounded-1"
+            src={`../uploads/${user.avatar}`}
+            alt={user.name}
+          />
         </div>
-        <img
-          className="rounded-1 w-50 mx-auto"
-          src={`../uploads/${user.avatar}`}
-          alt={user.name}
-        />
       </div>
     </div>
   );

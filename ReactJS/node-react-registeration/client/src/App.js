@@ -10,7 +10,7 @@ const App = () => {
     <Provider store={store}>
       <Navbar />
       <Form />
-      <div className="container mt-4">
+      <div className="container">
         <AppRouter />
       </div>
     </Provider>
