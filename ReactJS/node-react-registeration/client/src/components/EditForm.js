@@ -5,7 +5,7 @@ import { useState } from "react";
 const Form = ({ info }) => {
   const _id = info._id;
   const dispatch = useDispatch();
-  const [modal, setModal] = useState({ isOpen: false });
+  const [isOpen, setOpen] = useState(false);
   const [user, setUser] = useState({
     name: info.name,
     email: info.email,
@@ -20,7 +20,7 @@ const Form = ({ info }) => {
     setUser(state);
   };
   const handleSubmit = () => {
-    setModal({ isOpen: false });
+    setOpen(false);
     const formData = new FormData();
     formData.append("avatar", user.avatar);
     formData.append("name", user.name);
@@ -34,24 +34,25 @@ const Form = ({ info }) => {
         type="button"
         value="Edit"
         onClick={() => {
-          setModal({ isOpen: true });
+          setOpen(true)
         }}
       />
       <ReactModal
-        isOpen={modal.isOpen}
-        style={{
-          content: {
-            width: "50%",
-            top: "25%",
-            left: "25%",
-            right: "auto",
-            bottom: "auto",
-          },
-        }}
+        isOpen={isOpen}
         ariaHideApp={false}
+        onRequestClose={() => {
+          setOpen(false);
+        }}
+      className="modalStyle col-11 col-md-6"
       >
+              <button
+        className="x-btn btn btn-outline-danger"
+        onClick={() => setOpen(false)}
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
+          <div className="mb-3 mt-3">
             <label htmlFor="name" className="form-label">
               Name
             </label>

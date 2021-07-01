@@ -1,4 +1,4 @@
-import ReactModal from "react-modal";
+import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { hideModal, addNewUser } from "../actions";
 import { useState } from "react";
@@ -24,21 +24,22 @@ const Form = () => {
     dispatch(addNewUser(formData));
   };
   return (
-    <ReactModal
+    <Modal
       isOpen={modal}
-      style={{
-        content: {
-          width: "50%",
-          top: "25%",
-          left: "25%",
-          right: "auto",
-          bottom: "auto",
-        },
-      }}
       ariaHideApp={false}
+      onRequestClose={() => {
+        dispatch(hideModal());
+      }}
+      className="modalStyle col-11 col-md-6"
     >
+      <button
+        className="x-btn btn btn-outline-danger"
+        onClick={() => dispatch(hideModal())}
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
       <form method="post" onSubmit={handleSubmit}>
-        <div className="mb-3">
+        <div className="mb-3 mt-3">
           <label htmlFor="name" className="form-label">
             Name
           </label>
@@ -78,7 +79,7 @@ const Form = () => {
           Submit
         </button>
       </form>
-    </ReactModal>
+    </Modal>
   );
 };
 export default Form;
