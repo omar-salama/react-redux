@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const mongoose = require("mongoose");
 const fs = require("fs/promises");
 const PORT = process.env.PORT || 3001;
@@ -33,6 +34,9 @@ const upload = multer({
 }); // EOF handling image upload
 
 app.use(express.json());
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "build")));
+}
 app.use("/uploads", express.static("uploads"));
 
 app.get("/users", (req, res) => {
@@ -46,7 +50,7 @@ app.get("/users", (req, res) => {
 });
 app.get("/users/name/:name", (req, res) => {
   const name = req.params.name;
-  User.find({ name: name })
+  User.find({ name: { $regex: `${name}`, $options: "i" } })
     .then((result) => {
       res.status(200).json(result);
     })
@@ -106,6 +110,12 @@ app.delete("/users/:id", (req, res) => {
 deleteAvatar = (avatar) => {
   fs.unlink(`uploads/${avatar}`).catch((err) => console.error(err));
 };
+// for handling Client-Side Routes on production
+if (process.env.NODE_ENV === "production") {
+  app.get("/*", function (req, res) {
+    res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
+  });
+}
 app.listen(PORT, () => {
   console.log(`Server listening on ${PORT}`);
 });

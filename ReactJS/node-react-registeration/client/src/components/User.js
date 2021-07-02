@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 const User = ({ user }) => {
   return (
     <div className="User">
-      <Link to={`/users/${user._id}`}>
+      <Link to={`/user/${user._id}`}>
         <div className="card mb-4 ps-3 ">
           <div className="card-body d-flex justify-content-between">
             <p className="card-title display-5 align-self-center">
