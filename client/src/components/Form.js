@@ -36,7 +36,7 @@ const Form = () => {
         className="x-btn btn btn-outline-danger"
         onClick={() => dispatch(hideModal())}
       >
-        <i class="bi bi-x-lg"></i>
+        <i className="bi bi-x-lg"></i>
       </button>
       <form method="post" onSubmit={handleSubmit}>
         <div className="mb-3 mt-3">

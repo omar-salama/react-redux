@@ -12,7 +12,7 @@ const User = require("./users.model");
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./uploads");
+    cb(null, process.env.UPLOADS_PATH);
   },
   filename: (req, file, cb) => {
     cb(null, `${new Date().toISOString()}_${file.originalname}`);
@@ -38,7 +38,7 @@ app.use(express.json());
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "..", "client", "build",)));
 }
-app.use("/uploads", express.static("../uploads"));
+app.use("/uploads", express.static("uploads"));
 
 app.get("/users", (req, res) => {
   User.find({})
