@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const fs = require("fs/promises");
+require("dotenv").config({ path: '../.env'});
 const PORT = process.env.PORT || 3001;
 const app = express();
 require("./db_connection");
@@ -35,9 +36,9 @@ const upload = multer({
 
 app.use(express.json());
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "build")));
+  app.use(express.static(path.join(__dirname, "..", "client", "build",)));
 }
-app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static("../uploads"));
 
 app.get("/users", (req, res) => {
   User.find({})
@@ -113,7 +114,7 @@ deleteAvatar = (avatar) => {
 // for handling Client-Side Routes on production
 if (process.env.NODE_ENV === "production") {
   app.get("/*", function (req, res) {
-    res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
+    res.sendFile(path.resolve(__dirname, "..", "client", "build", "index.html"));
   });
 }
 app.listen(PORT, () => {
