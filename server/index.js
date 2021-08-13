@@ -1,4 +1,5 @@
 const express = require("express");
+const morgan = require("morgan");
 const path = require("path");
 const mongoose = require("mongoose");
 const fs = require("fs/promises");
@@ -39,6 +40,7 @@ app.use(express.json());
 if (process.env.NODE_ENV === "development") {
   app.use("/uploads", express.static("uploads"));
 }
+app.use(morgan("common"));
 
 app.get("/users", (req, res) => {
   User.find({})
