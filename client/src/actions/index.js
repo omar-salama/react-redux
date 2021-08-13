@@ -1,5 +1,5 @@
 import axios from "axios";
-const api = "/users";
+const api = "/api/users";
 
 export const getUsers = async (name) => {
   let response = null;
