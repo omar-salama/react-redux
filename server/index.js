@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path");
 const mongoose = require("mongoose");
 const fs = require("fs/promises");
-require("dotenv").config({ path: '../.env'});
 const PORT = process.env.PORT || 3001;
 const app = express();
 require("./db_connection");
@@ -12,7 +11,7 @@ const User = require("./users.model");
 const multer = require("multer");
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, process.env.UPLOADS_PATH);
+    cb(null, "./uploads");
   },
   filename: (req, file, cb) => {
     cb(null, `${new Date().toISOString()}_${file.originalname}`);
@@ -35,10 +34,11 @@ const upload = multer({
 }); // EOF handling image upload
 
 app.use(express.json());
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "..", "client", "build",)));
+
+// images are server by NGINX on production.
+if (process.env.NODE_ENV === "development") {
+  app.use("/uploads", express.static("uploads"));
 }
-app.use("/uploads", express.static("uploads"));
 
 app.get("/users", (req, res) => {
   User.find({})
@@ -114,7 +114,9 @@ deleteAvatar = (avatar) => {
 // for handling Client-Side Routes on production
 if (process.env.NODE_ENV === "production") {
   app.get("/*", function (req, res) {
-    res.sendFile(path.resolve(__dirname, "..", "client", "build", "index.html"));
+    res.sendFile(
+      path.resolve(__dirname, "..", "client", "build", "index.html")
+    );
   });
 }
 app.listen(PORT, () => {
