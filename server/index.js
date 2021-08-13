@@ -36,7 +36,7 @@ const upload = multer({
 
 app.use(express.json());
 
-// images are server by NGINX on production.
+// images are served by NGINX on production.
 if (process.env.NODE_ENV === "development") {
   app.use("/uploads", express.static("uploads"));
 }
