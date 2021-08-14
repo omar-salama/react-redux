@@ -1,13 +1,18 @@
-const route = require("express").Router();
+const router = require("express").Router();
 const user = require("./user.controller");
 const upload = require("../middlewares/multer");
 
-route
-  .get("/users", user.getAll)
-  .get("/users/name/:name", user.getByName)
-  .get("/users/:id", user.getById)
-  .post("/users", upload.single("avatar"), user.createUser)
-  .put("/users/:id", upload.single("avatar"), user.updateUser)
-  .delete("/users/:id", user.deleteUser);
+router
+  .route("/users")
+  .get(user.getAll)
+  .post(upload.single("avatar"), user.createUser);
 
-module.exports = route;
+router
+  .route("/users/:id")
+  .get(user.getById)
+  .put(upload.single("avatar"), user.updateUser)
+  .delete(user.deleteUser);
+
+router.get("/users/name/:name", user.getByName);
+
+module.exports = router;
