@@ -12,8 +12,7 @@ getAll = (req, res) => {
     });
 };
 getByName = (req, res) => {
-  const { name } = req.query;
-  console.log(name)
+  const name = req.params.name;
   User.find({ name: { $regex: `${name}`, $options: "i" } })
     .then((result) => {
       res.status(200).json(result);

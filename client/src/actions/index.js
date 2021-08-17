@@ -1,12 +1,12 @@
 import axios from "axios";
-const api = "/api/user";
+const api = "/api/users";
 
 export const getUsers = async (name) => {
   let response = null;
   try {
     if (!name) {
       response = await axios.get(api);
-    } else response = await axios.get(`${api}/search?name=${name}`);
+    } else response = await axios.get(`${api}/name/${name}`);
   } catch (error) {
     console.log(error);
   }

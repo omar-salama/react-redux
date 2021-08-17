@@ -11,6 +11,6 @@ if (process.env.NODE_ENV === "development") {
 
 app.use(morgan("common"));
 app.use(express.json());
-app.use("/api/user", userRouter);
+app.use("/api", userRouter);
 
 module.exports = app;
