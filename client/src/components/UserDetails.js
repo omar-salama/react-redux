@@ -14,10 +14,10 @@ const UserDetails = (props) => {
     dispatch(clearDetails());
   }, [dispatch, _id]);
 
-  const onDelete = () => {
+  const onDelete = async () => {
     const ans = window.confirm("Are you sure?");
     if (ans) {
-      dispatch(deleteUser(_id));
+      await dispatch(deleteUser(_id));
       props.history.replace("/");
     }
   };
