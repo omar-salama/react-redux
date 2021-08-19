@@ -2,72 +2,72 @@ const mongoose = require("mongoose");
 const User = require("./user.model");
 const deleteAvatar = require("../helpers/deleteAvatar");
 
-getAll = (req, res) => {
-  User.find({})
-    .then((result) => {
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(500).json(err.message);
-    });
+getAll = async (req, res, next) => {
+  try {
+    const result = await User.find({});
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
 };
-getByName = (req, res) => {
+getByName = async (req, res, next) => {
   const { name } = req.query;
-  console.log(name)
-  User.find({ name: { $regex: `${name}`, $options: "i" } })
-    .then((result) => {
-      res.status(200).json(result);
-    })
-    .catch((err) => {
-      res.status(400).json(err.message);
+  try {
+    const result = await User.find({
+      name: { $regex: `${name}`, $options: "i" },
     });
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
 };
-getById = (req, res) => {
+getById = async (req, res, next) => {
   const _id = req.params.id;
-  User.findById({ _id })
-    .then((result) => res.status(200).json(result))
-    .catch((err) => {
-      res.status(400).json(err.message);
-    });
+  try {
+    const result = await User.findById({ _id });
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
 };
-createUser = (req, res) => {
-  let user = new User({
-    _id: new mongoose.Types.ObjectId(),
-    name: req.body.name,
-    email: req.body.email,
-    avatar: req.file.filename,
-  });
-  user
-    .save()
-    .then((result) => {
-      res.status(201).json(result);
-    })
-    .catch((err) => {
-      res.status(400).json(err.message);
+createUser = async (req, res, next) => {
+  const { name, email } = req.body;
+  try {
+    await User.create({
+      name: name,
+      email: email,
+      avatar: req.file.filename,
     });
+    res.status(201).json();
+  } catch (err) {
+    next(err);
+  }
 };
-updateUser = (req, res) => {
+updateUser = async (req, res, next) => {
   const _id = req.params.id;
-  const user = {
-    name: req.body.name,
-    email: req.body.email,
-    avatar: req.file ? req.file.filename : req.body.avatar,
+  const { name, email, avatar } = req.body;
+  const updatedUser = {
+    name: name,
+    email: email,
+    avatar: req.file ? req.file.filename : avatar,
   };
-  User.findOneAndUpdate({ _id }, user)
-    .then((data) => {
-      if (user.avatar !== data.avatar) deleteAvatar(data.avatar);
-      return res.status(200).json(data);
-    })
-    .catch((err) => res.status(400).json(err.message));
+  try {
+    const oldUser = await User.findOneAndUpdate({ _id }, updatedUser);
+    if (updatedUser.avatar !== oldUser.avatar) deleteAvatar(oldUser.avatar);
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    next(err);
+  }
 };
-deleteUser = (req, res) => {
+deleteUser = async (req, res, next) => {
   const _id = req.params.id;
-  User.findByIdAndDelete(_id)
-    .then((data) => {
-      if (data.avatar) deleteAvatar(data.avatar);
-      return res.status(200).json();
-    })
-    .catch((err) => res.status(400).json(err.message));
+  try {
+    const deletedUser = await User.findByIdAndDelete(_id);
+    deleteAvatar(deletedUser.avatar);
+    res.status(200).json();
+  } catch (err) {
+    next(err);
+  }
 };
 
 module.exports = {
