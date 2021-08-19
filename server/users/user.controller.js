@@ -46,6 +46,7 @@ updateUser = async (req, res, next) => {
   const _id = req.params.id;
   const { name, email, avatar } = req.body;
   const updatedUser = {
+    _id,
     name: name,
     email: email,
     avatar: req.file ? req.file.filename : avatar,

@@ -36,7 +36,7 @@ export const addNewUser = async (user) => {
         type: "NEW_USER",
         payload: response.data,
       };
-    } else return { type: "USER_CREATED", payload: [] };
+    } else return { type: "NEW_USER", payload: [] };
   } catch (err) {
     console.log(err);
   }
@@ -57,10 +57,7 @@ export const updateUser = async (id, user) => {
   try {
     let response = await axios.put(`${api}/${id}`, user);
     if (response.status === 200) {
-      response = await axios.get(`${api}/${id}`);
       return { type: "UPDATE_USER", payload: response.data };
-
-      
     } else return { type: "UPDATE_USER", payload: [] };
   } catch (err) {
     console.error(err);
