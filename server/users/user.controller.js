@@ -1,5 +1,6 @@
 const User = require("./user.model");
 const deleteAvatar = require("../helpers/deleteAvatar");
+const ApiError = require("../helpers/errors.class");
 
 getAll = async (req, res, next) => {
   const result = await User.find({}).exec();
@@ -17,6 +18,10 @@ getByName = async (req, res, next) => {
 getById = async (req, res, next) => {
   const _id = req.params.id;
   const result = await User.findById({ _id }).exec();
+  if (!result) {
+    return next(ApiError.notFound("User not found."));
+    // return next(({ status: 404, message: "User not found." }))
+  }
   res.status(200).json(result);
 };
 
