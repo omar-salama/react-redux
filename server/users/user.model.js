@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const User = mongoose.model("Users", {
   name: {
@@ -14,4 +14,5 @@ const User = mongoose.model("Users", {
     required: true,
   },
 });
-module.exports = User;
+
+export default User;

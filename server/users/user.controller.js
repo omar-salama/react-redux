@@ -1,13 +1,13 @@
-const User = require("./user.model");
-const deleteAvatar = require("../helpers/deleteAvatar");
-const ApiError = require("../helpers/errors.class");
+import User from "./user.model.js";
+import deleteAvatar from "../helpers/deleteAvatar.js";
+import ApiError from "../helpers/errors.class.js";
 
-getAll = async (req, res, next) => {
+export const getAll = async (req, res, next) => {
   const result = await User.find({}).exec();
   res.status(200).json(result);
 };
 
-getByName = async (req, res, next) => {
+export const getByName = async (req, res, next) => {
   const { name } = req.query;
   const result = await User.find({
     name: { $regex: `${name}`, $options: "i" },
@@ -15,7 +15,7 @@ getByName = async (req, res, next) => {
   res.status(200).json(result);
 };
 
-getById = async (req, res, next) => {
+export const getById = async (req, res, next) => {
   const _id = req.params.id;
   const result = await User.findById({ _id }).exec();
   if (!result) {
@@ -25,7 +25,7 @@ getById = async (req, res, next) => {
   res.status(200).json(result);
 };
 
-createUser = async (req, res, next) => {
+export const createUser = async (req, res, next) => {
   const { name, email } = req.body;
   await User.create({
     name: name,
@@ -35,7 +35,7 @@ createUser = async (req, res, next) => {
   res.status(201).json();
 };
 
-updateUser = async (req, res, next) => {
+export const updateUser = async (req, res, next) => {
   const _id = req.params.id;
   const { name, email, avatar } = req.body;
   const updatedUser = {
@@ -49,18 +49,9 @@ updateUser = async (req, res, next) => {
   res.status(200).json(updatedUser);
 };
 
-deleteUser = async (req, res, next) => {
+export const deleteUser = async (req, res, next) => {
   const _id = req.params.id;
   const deletedUser = await User.findByIdAndDelete(_id).exec();
   deleteAvatar(deletedUser.avatar);
   res.status(200).json();
-};
-
-module.exports = {
-  getAll,
-  getByName,
-  getById,
-  createUser,
-  updateUser,
-  deleteUser,
 };

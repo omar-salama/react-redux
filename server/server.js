@@ -1,7 +1,7 @@
-const express = require("express");
-const morgan = require("morgan");
-const userRouter = require("./users/user.route");
-const errorHandler = require("./middlewares/errorHandler");
+import express from "express";
+import morgan from "morgan";
+import userRouter from "./users/user.route.js";
+import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
 
@@ -13,6 +13,6 @@ if (process.env.NODE_ENV === "development") {
 app.use(morgan("common"));
 app.use(express.json());
 app.use("/api/user", userRouter);
-app.use(errorHandler)
+app.use(errorHandler);
 
-module.exports = app;
+export default app;

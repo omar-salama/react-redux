@@ -1,8 +1,10 @@
-require("./db_connection");
-const app = require("./server")
+import { dbConnect } from "./db_connection.js";
+import app from "./server.js";
+
 const PORT = process.env.PORT || 3001;
 
-
-app.listen(PORT, () => {
-    console.log(`Server listening on ${PORT}`);
+dbConnect().then(() => {
+  app.listen(PORT, () => {
+    console.log(`REST API listening on port: ${PORT}`);
   });
+});

@@ -1,4 +1,4 @@
 const promiseResolver = (fn) => (req, res, next) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
-module.exports = promiseResolver;
+export default promiseResolver;

@@ -1,19 +1,27 @@
-const router = require("express").Router();
-const user = require("./user.controller");
-const upload = require("../middlewares/multer");
-const promiseResolver = require("../helpers/promiseResolver");
+import { Router } from "express";
+import {
+  getAll,
+  createUser,
+  getByName,
+  getById,
+  updateUser,
+  deleteUser,
+} from "./user.controller.js";
+import upload from "../middlewares/multer.js";
+import promiseResolver from "../helpers/promiseResolver.js";
 
+const router = Router();
 router
   .route("/")
-  .get(promiseResolver(user.getAll))
-  .post(upload.single("avatar"), promiseResolver(user.createUser));
+  .get(promiseResolver(getAll))
+  .post(upload.single("avatar"), promiseResolver(createUser));
 
-router.get("/search?", promiseResolver(user.getByName));
+router.get("/search?", promiseResolver(getByName));
 
 router
   .route("/:id")
-  .get(promiseResolver(user.getById))
-  .put(upload.single("avatar"), promiseResolver(user.updateUser))
-  .delete(promiseResolver(user.deleteUser));
+  .get(promiseResolver(getById))
+  .put(upload.single("avatar"), promiseResolver(updateUser))
+  .delete(promiseResolver(deleteUser));
 
-module.exports = router;
+export default router;
