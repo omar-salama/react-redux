@@ -1,18 +1,19 @@
 const router = require("express").Router();
 const user = require("./user.controller");
 const upload = require("../middlewares/multer");
+const promiseResolver = require("../helpers/promiseResolver");
 
 router
-.route("/")
-.get(user.getAll)
-.post(upload.single("avatar"), user.createUser);
+  .route("/")
+  .get(promiseResolver(user.getAll))
+  .post(upload.single("avatar"), promiseResolver(user.createUser));
 
-router.get("/search?", user.getByName);
+router.get("/search?", promiseResolver(user.getByName));
 
 router
-.route("/:id")
-.get(user.getById)
-.put(upload.single("avatar"), user.updateUser)
-.delete(user.deleteUser);
+  .route("/:id")
+  .get(promiseResolver(user.getById))
+  .put(upload.single("avatar"), promiseResolver(user.updateUser))
+  .delete(promiseResolver(user.deleteUser));
 
 module.exports = router;
