@@ -27,12 +27,12 @@ export const getById = async (req, res, next) => {
 
 export const createUser = async (req, res, next) => {
   const { name, email } = req.body;
-  await User.create({
+  const newUser = await User.create({
     name: name,
     email: email,
     avatar: req.file.filename,
   });
-  res.status(201).json();
+  res.status(201).json(newUser);
 };
 
 export const updateUser = async (req, res, next) => {

@@ -30,13 +30,10 @@ export const getUserById = async (_id) => {
 export const addNewUser = async (user) => {
   try {
     let response = await axios.post(api, user);
-    if (response.status === 201) {
-      response = await axios.get(api);
-      return {
-        type: "NEW_USER",
-        payload: response.data,
-      };
-    } else return { type: "NEW_USER", payload: [] };
+    return {
+      type: "NEW_USER",
+      payload: response.data,
+    };
   } catch (err) {
     console.log(err);
   }

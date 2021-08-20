@@ -1,15 +1,15 @@
-export const users = (state = {}, actions) => {
-  switch (actions.type) {
+export const users = (state = {}, action) => {
+  switch (action.type) {
     case "DELETE_USER":
-      const { list } = state;
-      return list.filter((element) => element !== actions.payload);
+      return state.list.filter((element) => element !== action.payload);
     case "USERS_LIST":
+      return { ...state, list: action.payload };
     case "NEW_USER":
-      return { ...state, list: actions.payload };
+      return { ...state, list: [...state.list, action.payload] };
     case "USER_DETAILS":
     case "UPDATE_USER":
     case "CLEAR_DETAILS":
-      return { ...state, details: actions.payload };
+      return { ...state, details: action.payload };
     default:
       return state;
   }
