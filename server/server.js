@@ -10,6 +10,7 @@ if (process.env.NODE_ENV === "development") {
   app.use("/uploads", express.static("uploads"));
 }
 
+app.set('trust proxy', 'loopback');
 app.use(morgan("common"));
 app.use(express.json());
 app.use("/api/user", userRouter);
