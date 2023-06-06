@@ -1,15 +1,15 @@
-import { Switch, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import UserDetails from "./components/UserDetails";
 import { NotFound } from "./components/NotFound";
-const Routes = () => {
+const AppRouter = () => {
   return (
-      <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/user/:id" component={UserDetails} />
-        <Route path="*" component={NotFound} />
-      </Switch>
+      <Routes>
+        <Route path="/" exact element={<Home />} />
+        <Route path="/user/:id" element={<UserDetails />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
   );
 };
 
-export default Routes;
+export default AppRouter;
