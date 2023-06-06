@@ -1,13 +1,8 @@
-import { config } from "dotenv";
 import mongoose from "mongoose";
-
-config();
-
-const url = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@initialcluster.uen29.mongodb.net/RegisterMe?retryWrites=true&w=majority`;
 
 export const dbConnect = async () => {
   try {
-    const connection = await mongoose.connect(url, {
+    const connection = await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useFindAndModify: false,
