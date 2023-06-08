@@ -1,33 +1,43 @@
 import axios from "axios";
 const api = "/api/user";
 
-export const getUsers = async (name) => {
-  let response = null;
+type User = {
+  _id: string;
+  name: string;
+  email: string;
+  avatar: string;
+}
+
+type Users = {
+  data: User[];
+};
+
+export const getUsers = async (name: string | undefined) => {
   try {
+    let response: Users;
     if (!name) {
       response = await axios.get(api);
     } else response = await axios.get(`${api}/search?name=${name}`);
+    return {
+      type: "USERS_LIST",
+      payload: response.data,
+    };
   } catch (error) {
     console.log(error);
   }
-  return {
-    type: "USERS_LIST",
-    payload: response.data,
-  };
 };
-export const getUserById = async (_id) => {
-  let response = null;
+export const getUserById = async (_id: string) => {
   try {
-    response = await axios.get(`${api}/${_id}`);
+    let response = await axios.get(`${api}/${_id}`);
+    return {
+      type: "USER_DETAILS",
+      payload: response.data,
+    };
   } catch (error) {
     console.log(error);
   }
-  return {
-    type: "USER_DETAILS",
-    payload: response.data,
-  };
 };
-export const addNewUser = async (user) => {
+export const addNewUser = async (user: User) => {
   try {
     let response = await axios.post(api, user);
     return {
@@ -38,19 +48,18 @@ export const addNewUser = async (user) => {
     console.log(err);
   }
 };
-export const deleteUser = async (_id) => {
-  let response = null;
+export const deleteUser = async (_id: string) => {
   try {
-    response = await axios.delete(`${api}/${_id}`);
+    let response = await axios.delete(`${api}/${_id}`);
+    return {
+      type: "DELETE_USER",
+      payload: response.data,
+    };
   } catch (error) {
     console.log(error);
   }
-  return {
-    type: "DELETE_USER",
-    payload: response.data,
-  };
 };
-export const updateUser = async (id, user) => {
+export const updateUser = async (id: string, user: User) => {
   try {
     let response = await axios.put(`${api}/${id}`, user);
     if (response.status === 200) {

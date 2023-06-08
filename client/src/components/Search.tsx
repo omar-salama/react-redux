@@ -1,10 +1,10 @@
-import { useRef } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getUsers } from "../actions";
 
 const Search = () => {
-  const userRef = useRef();
   const dispatch = useDispatch();
+  const [userName, setUserName] = useState<string | undefined>(undefined);
   return (
     <div className="Search">
       <div className="row justify-content-center">
@@ -14,16 +14,16 @@ const Search = () => {
               type="search"
               className="form-control"
               placeholder="Find user by name"
-              ref={userRef}
-              onKeyPress={(e) => {
-                return e.key === "Enter"
-                  ? dispatch(getUsers(userRef.current.value))
-                  : false;
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  dispatch(getUsers(userName));
+                }
               }}
+                onChange={(e) => setUserName(e.target.value)}
             />
             <button
               className="btn btn-primary ps-4 pe-4"
-              onClick={() => dispatch(getUsers(userRef.current.value))}
+              onClick={() => dispatch(getUsers(userName))}
             >
               <i className="bi bi-search"></i>
             </button>
