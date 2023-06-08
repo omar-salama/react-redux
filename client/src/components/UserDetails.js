@@ -3,22 +3,24 @@ import { useEffect } from "react";
 import { deleteUser, getUserById, clearDetails } from "../actions";
 import Spinner from "./Spinner";
 import EditForm from "./EditForm";
+import { useNavigate, useParams } from "react-router-dom";
 const UserDetails = (props) => {
-  const _id = props.match.params.id;
+  const { id } = useParams();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => {
     return state.users.details;
   });
   useEffect(() => {
-    dispatch(getUserById(_id));
+    dispatch(getUserById(id));
     dispatch(clearDetails());
-  }, [dispatch, _id]);
+  }, [dispatch, id]);
 
   const onDelete = async () => {
     const ans = window.confirm("Are you sure?");
     if (ans) {
-      await dispatch(deleteUser(_id));
-      props.history.replace("/");
+      await dispatch(deleteUser(id));
+      navigate("/", { replace: true })
     }
   };
 
