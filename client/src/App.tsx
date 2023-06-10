@@ -1,7 +1,7 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Form from "./components/Form";
-import AppRouter from "./app-router";
+import AppRouter from "./AppRouter";
 import { Provider } from "react-redux";
 import store from "./store";
 

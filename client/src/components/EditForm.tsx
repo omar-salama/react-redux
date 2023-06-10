@@ -1,22 +1,27 @@
 import ReactModal from "react-modal";
 import { useDispatch } from "react-redux";
 import { updateUser } from "../actions";
-import { useState } from "react";
-const Form = ({ info }) => {
-  const _id = info._id;
+import { ChangeEvent, useState } from "react";
+import { IUser } from "../types";
+
+const Form = ({ info }: { info: IUser }) => {
+  const { _id, name, email, avatar } = info;
   const dispatch = useDispatch();
   const [isOpen, setOpen] = useState(false);
-  const [user, setUser] = useState({
-    name: info.name,
-    email: info.email,
-    avatar: info.avatar,
+
+  type UserState = Omit<IUser, "_id">; 
+
+  const [user, setUser] = useState<UserState>({
+    name,
+    email,
+    avatar,
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const key = e.currentTarget.name;
     let state = { ...user };
-    if (key !== "avatar") state[key] = e.target.value;
-    else state[key] = e.target.files[0];
+    if (key !== "avatar") state[key as keyof UserState] = e.target.value;
+    else if (e.target.files) state[key as keyof UserState] = e.target.files[0] as string & File;
     setUser(state);
   };
   const handleSubmit = () => {
@@ -49,7 +54,7 @@ const Form = ({ info }) => {
         className="x-btn btn btn-outline-danger"
         onClick={() => setOpen(false)}
       >
-        <i class="bi bi-x-lg"></i>
+        <i className="bi bi-x-lg"></i>
       </button>
         <form onSubmit={handleSubmit}>
           <div className="mb-3 mt-3">

@@ -5,7 +5,7 @@ import NotFound from "./components/NotFound";
 const AppRouter = () => {
   return (
       <Routes>
-        <Route path="/" exact element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/user/:id" element={<UserDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

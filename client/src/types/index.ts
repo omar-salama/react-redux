@@ -4,3 +4,7 @@ export type IUser = {
   email: string;
   avatar: string;
 }
+
+export type IModal = {
+  isOpen: boolean;
+}

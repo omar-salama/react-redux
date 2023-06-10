@@ -1,5 +1,7 @@
-const initialState = {
-  modal: false,
+import { IModal } from "../types";
+
+const initialState: IModal = {
+  isOpen: false,
 };
 
 type Action = {

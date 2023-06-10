@@ -1,20 +1,29 @@
 import Modal from "react-modal";
 import { useDispatch, useSelector } from "react-redux";
 import { hideModal, addNewUser } from "../actions";
-import { useState } from "react";
+import { ChangeEvent, FormEventHandler, useState } from "react";
+import { IRootState } from "../store";
+import { IModal, IUser } from "../types";
 const Form = () => {
-  const { modal } = useSelector((state) => state.modal);
   const dispatch = useDispatch();
-  const [user, setUser] = useState({ name: "", email: "", avatar: "" });
+  const { isOpen } = useSelector<IRootState, IModal>((state) => state.modal);
 
-  const handleChange = (e) => {
+  type UserState = Omit<IUser, "_id">; 
+
+  const [user, setUser] = useState<UserState>({
+    name: "",
+    email: "",
+    avatar: "",
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const key = e.currentTarget.name;
     let state = { ...user };
-    if (key !== "avatar") state[key] = e.target.value;
-    else state[key] = e.target.files[0];
+    if (key !== "avatar") state[key as keyof UserState] = e.target.value;
+    else if (e.target.files) state[key as keyof UserState] = e.target.files[0] as string & File;
     setUser(state);
   };
-  const handleSubmit = (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     dispatch(hideModal());
     const formData = new FormData();
@@ -25,7 +34,7 @@ const Form = () => {
   };
   return (
     <Modal
-      isOpen={modal}
+      isOpen={isOpen}
       ariaHideApp={false}
       onRequestClose={() => {
         dispatch(hideModal());

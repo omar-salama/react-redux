@@ -31,7 +31,7 @@ export const getUserById = async (_id: string) => {
     console.log(error);
   }
 };
-export const addNewUser = async (user: IUser) => {
+export const addNewUser = async (user: FormData) => {
   try {
     let response = await axios.post(api, user);
     return {
@@ -53,7 +53,7 @@ export const deleteUser = async (_id: string) => {
     console.log(error);
   }
 };
-export const updateUser = async (id: string, user: IUser) => {
+export const updateUser = async (id: string, user: FormData) => {
   try {
     let response = await axios.put(`${api}/${id}`, user);
     if (response.status === 200) {
@@ -67,7 +67,7 @@ export const updateUser = async (id: string, user: IUser) => {
 export function clearDetails() {
   return {
     type: "CLEAR_DETAILS",
-    payload: null,
+    payload: undefined,
   };
 }
 
