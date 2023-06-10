@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
-const User = ({ user }) => {
+import { IUser } from "../types";
+
+const User = ({ user }: { user: IUser }) => {
   return (
     <div className="User">
       <Link to={`/user/${user._id}`}>

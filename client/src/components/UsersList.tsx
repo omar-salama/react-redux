@@ -3,9 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUsers } from "../actions";
 import User from "./User";
 import Spinner from "./Spinner";
+import { IRootState } from "../store";
+
 const UsersList = () => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.users.list);
+  const users = useSelector((state: IRootState) => state.users.list);
+  
   useEffect(() => {
     dispatch(getUsers());
   }, [dispatch]);

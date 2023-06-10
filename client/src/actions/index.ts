@@ -1,18 +1,12 @@
 import axios from "axios";
+import { IUser } from "../types";
+
 const api = "/api/user";
-
-type User = {
-  _id: string;
-  name: string;
-  email: string;
-  avatar: string;
-}
-
 type Users = {
-  data: User[];
+  data: IUser[];
 };
 
-export const getUsers = async (name: string | undefined) => {
+export const getUsers = async (name?: string) => {
   try {
     let response: Users;
     if (!name) {
@@ -37,7 +31,7 @@ export const getUserById = async (_id: string) => {
     console.log(error);
   }
 };
-export const addNewUser = async (user: User) => {
+export const addNewUser = async (user: IUser) => {
   try {
     let response = await axios.post(api, user);
     return {
@@ -59,7 +53,7 @@ export const deleteUser = async (_id: string) => {
     console.log(error);
   }
 };
-export const updateUser = async (id: string, user: User) => {
+export const updateUser = async (id: string, user: IUser) => {
   try {
     let response = await axios.put(`${api}/${id}`, user);
     if (response.status === 200) {

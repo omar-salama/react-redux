@@ -4,4 +4,6 @@ import PromiseMW from "redux-promise";
 
 const createStoreWithMW = applyMiddleware(PromiseMW)(createStore);
 const store = createStoreWithMW(rootReducer);
+
+export type IRootState = ReturnType<typeof rootReducer>;
 export default store;

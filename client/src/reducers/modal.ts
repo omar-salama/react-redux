@@ -1,7 +1,13 @@
 const initialState = {
   modal: false,
 };
-export const modal = (state = initialState, actions) => {
+
+type Action = {
+  type: "showModal" | "hideModal";
+  payload: boolean;
+};
+
+export const modal = (state = initialState, actions: Action) => {
   switch (actions.type) {
     case "showModal":
       return { ...state, modal: actions.payload };
