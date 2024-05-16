@@ -1,9 +1,9 @@
 import "./App.css";
 import Navbar from "./components/Navbar";
-import Form from "./components/Form";
+import Form from "./features/users/AddForm";
 import AppRouter from "./AppRouter";
 import { Provider } from "react-redux";
-import store from "./store";
+import { store } from "./store";
 
 const App = () => {
   return (

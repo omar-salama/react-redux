@@ -1,36 +1,50 @@
-import Modal from "react-modal";
-import { useDispatch, useSelector } from "react-redux";
-import { hideModal, addNewUser } from "../actions";
-import { ChangeEvent, FormEventHandler, useState } from "react";
-import { IRootState } from "../store";
-import { IModal, IUser } from "../types";
+import Modal from 'react-modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { ChangeEvent, FormEventHandler, useEffect, useState } from 'react';
+import { IUser } from '../../types';
+import { RootState } from '../../store';
+import { hideModal } from '../modals/modalSlice';
+import { useAddUserMutation } from './usersApi';
+import { Spinner } from 'reactstrap';
 const Form = () => {
   const dispatch = useDispatch();
-  const { isOpen } = useSelector<IRootState, IModal>((state) => state.modal);
+  const { isOpen } = useSelector((state: RootState) => state.modal);
 
-  type UserState = Omit<IUser, "_id">; 
+  type UserState = Omit<IUser, '_id'>;
 
-  const [user, setUser] = useState<UserState>({
-    name: "",
-    email: "",
-    avatar: "",
-  });
+  const [addUser, { isLoading, isSuccess }] = useAddUserMutation();
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const key = e.currentTarget.name;
+  const initValues = {
+    name: '',
+    email: '',
+    avatar: '',
+  };
+
+  const [user, setUser] = useState<UserState>(initValues);
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(hideModal());
+      setUser(initValues);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoading, isSuccess]);
+
+  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const key = target.name;
     let state = { ...user };
-    if (key !== "avatar") state[key as keyof UserState] = e.target.value;
-    else if (e.target.files) state[key as keyof UserState] = e.target.files[0] as string & File;
+    if (key !== 'avatar') state[key as keyof UserState] = target.value;
+    else if (target.files)
+      state[key as keyof UserState] = target.files[0] as string & File;
     setUser(state);
   };
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    dispatch(hideModal());
     const formData = new FormData();
-    formData.append("avatar", user.avatar);
-    formData.append("name", user.name);
-    formData.append("email", user.email);
-    dispatch(addNewUser(formData));
+    formData.append('avatar', user.avatar);
+    formData.append('name', user.name);
+    formData.append('email', user.email);
+    addUser(formData);
   };
   return (
     <Modal
@@ -84,8 +98,11 @@ const Form = () => {
             onChange={handleChange}
           />
         </div>
-        <button className="btn btn-success" type="submit">
-          Submit
+        <button
+          className={`btn btn-success w-25 ${isLoading && 'disabled'}`}
+          type="submit"
+        >
+          {isLoading ? <Spinner size="sm" /> : 'Submit'}
         </button>
       </form>
     </Modal>

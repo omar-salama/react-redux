@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { IUser } from "../types";
+import { IUser } from "../../types";
 
 const User = ({ user }: { user: IUser }) => {
   return (

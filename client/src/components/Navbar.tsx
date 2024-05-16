@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
-import { showModal } from "../actions";
+import { showModal } from "../features/modals/modalSlice";
 
 const Navbar = () => {
   const dispatch = useDispatch();

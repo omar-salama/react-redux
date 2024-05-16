@@ -1,10 +1,16 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { getUsers } from "../actions";
+import { useState } from 'react';
 
-const Search = () => {
-  const dispatch = useDispatch();
-  const [userName, setUserName] = useState<string | undefined>(undefined);
+const Search = ({
+  handleFilterQuery,
+}: {
+  handleFilterQuery: (value?: string) => void;
+}) => {
+  const [name, setName] = useState<string | undefined>(undefined);
+
+  const handleSearch = () => {
+    handleFilterQuery(name);
+  };
+
   return (
     <div className="Search">
       <div className="row justify-content-center">
@@ -15,15 +21,17 @@ const Search = () => {
               className="form-control"
               placeholder="Find user by name"
               onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  dispatch(getUsers(userName));
+                if (e.key === 'Enter') {
+                  handleSearch();
                 }
               }}
-                onChange={(e) => setUserName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
             />
             <button
               className="btn btn-primary ps-4 pe-4"
-              onClick={() => dispatch(getUsers(userName))}
+              onClick={handleSearch}
             >
               <i className="bi bi-search"></i>
             </button>
